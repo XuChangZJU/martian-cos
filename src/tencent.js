@@ -3,20 +3,46 @@
  */
 "use strict";
 
-const FormData2 = require('form-data');
-const fs = require("fs");
-const crypto = require('crypto');
 const urlM = require('url');
 
 
-require('isomorphic-fetch');
-
 function upload(file, url, sign, bizAttr, type) {
     var formData;
-    if(typeof file === "string") {
-        formData = new FormData2();
+    if(typeof file === "object" &&  typeof file.uri === "string") {
+        formData = new FormData();
         formData.append("op", "upload");
-        formData.append("filecontent", fs.createReadStream(file));
+        let type, name, fileSuffix, index1 = file.uri.lastIndexOf('/'), index2 = file.uri.lastIndexOf('.');
+        name = ( index1 === -1) ? file.uri : file.uri.slice(index1 + 1);
+        fileSuffix = (index2 === -1) ? file.uri : file.uri.slice(index2 + 1);
+        switch(fileSuffix)  {
+            case "jpg":
+            case "jpeg": {
+                type = "image/jpeg";
+                break;
+            }
+            case "png": {
+                type = "image/png";
+                break;
+            }
+            case "gif":
+            {
+                type = "image/gif";
+                break;
+            }
+            default:
+            {
+                type = 'application/octet-stream';
+                break;
+            }
+        }
+
+
+        const fileContent = {
+            uri: file.uri,
+            type,
+            name
+        }
+        formData.append("filecontent", fileContent);
         if(bizAttr) {
             switch(typeof bizAttr) {
                 case "object": {
@@ -37,68 +63,40 @@ function upload(file, url, sign, bizAttr, type) {
     }
 
     var promise = new Promise(function(resolve, reject) {
-        formData.getLength(
-            function(err, length) {
-                if(err) {
-                    reject({
-                        code: ErrorCode.errorRunTime.code,
-                        message: "未能计算formData的长度，原因是" + err
-                    });
+
+        var urlInfo = urlM.parse(url);
+        var headers = {
+            "Authorization": sign,
+            "Host": "web.file.myqcloud.com"
+        };
+
+        var init = {
+            headers: headers,
+            body: formData,
+            method: 'POST',
+            hostname: urlInfo.hostname
+        };
+
+        fetch(url, init)
+            .then((response) => {
+                    response.json()
+                        .then(
+                            (json) => {
+                                if (!response.ok || json.error != undefined) {
+                                    reject(json)
+                                }
+                                else {
+                                    resolve({
+                                        url: json.data.access_url
+                                    });
+                                }
+                            }
+                        )
+                },
+                (err) => {
+                    reject(err);
                 }
-                else {
-                    // 计算文件的hash值
-                    var fst = fs.createReadStream(file);
-                    const hash = crypto.createHash('sha1');
-                    fst.on('readable', () => {
-                        var data = fst.read();
-                        if (data)
-                            hash.update(data);
-                        else {
-                            formData.append("sha", hash.digest());
-
-                            var urlInfo = urlM.parse(url);
-                            var headers = formData.getHeaders({
-                                "Authorization": sign,
-                                "Host": "web.file.myqcloud.com",
-                                "Content-Length": length,
-                                "User-Agent": "android"
-                            });
-
-                            var init = {
-                                headers: headers,
-                                body: formData,
-                                method: 'POST',
-                                protocol: urlInfo.protocol,
-                                hostname: urlInfo.hostname,
-                                port: urlInfo.port,
-                                path: urlInfo.path
-                            };
-
-                            fetch(url, init)
-                                .then((response) => {
-                                        response.json()
-                                            .then(
-                                                (json) => {
-                                                    if (!response.ok || json.error != undefined) {
-                                                        reject(json)
-                                                    }
-                                                    else {
-                                                        resolve({
-                                                            url: json.data.access_url
-                                                        });
-                                                    }
-                                                }
-                                            )
-                                    },
-                                    (err) => {
-                                        reject(err);
-                                    }
-                                );
-                        }
-                    });
-                }
-            }
-        );
+            );
     });
 
     return promise;

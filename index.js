@@ -3,7 +3,7 @@
  */
 "use strict";
 
-const tencent = require("./src/tencent");
+const tencent = require("./src/tencent.pc");
 
 /**
  * 执行文件上传
