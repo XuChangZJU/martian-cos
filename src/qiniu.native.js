@@ -1,14 +1,14 @@
 /**
  * Created by lavystord on 16/9/10.
  */
-
-function upload(file, params, formInput) {
+const foo = '!!!!!!!!!!!!!!!!!!!!!!!';
+function upload(file, params, formInput={}) {
 
     const { url, key, uploadToken, uploadHost } = params;
 
-    if (typeof formInput !== 'object') {
-        return false;
-    }
+    // if (typeof formInput !== 'object') {
+    //     return false;
+    // }
 
     let formData = new FormData();
 
@@ -25,27 +25,20 @@ function upload(file, params, formInput) {
     options.body = formData;
     options.method = 'POST';
     return fetch(uploadHost, options).then(
-        (response) => {
-            response.json()
-                .then(
-                    (json) => {
-                        // console.log('@@######################');
-                        // console.log(json);
-                        // console.log('@@######################');
-                        if (!response.ok || json.error !== undefined) {
-                            return Promise.reject(json)
-                        }
-                        else {
-                            return Promise.resolve({
-                                url
-                            });
-                        }
-                    }
-                )
-
-        },
+        (response) => response.json(),
         (err) => {
             return Promise.reject(err);
+        }
+    ).then(
+        (json) => {
+            if (!json.key || json.error !== undefined) {
+                return Promise.reject(json)
+            }
+            else {
+                return Promise.resolve({
+                    url:url
+                });
+            }
         }
     );
 
