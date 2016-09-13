@@ -7,7 +7,7 @@ const urlM = require('url');
 
 function upload(file, configs) {
 
-    const { file, url, sign, type } = configs;
+    const { url, sign, type } = configs;
     let bizAttr = configs.bizAttr;
     /**
      * 执行文件上传
