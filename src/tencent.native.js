@@ -5,8 +5,18 @@
 
 const urlM = require('url');
 
+function upload(file, configs) {
 
-function upload(file, url, sign, bizAttr, type) {
+    const { file, url, sign, type } = configs;
+    let bizAttr = configs.bizAttr;
+    /**
+     * 执行文件上传
+     *  url   上传的目标路径（服务器提供）
+     *  sign  上传使用的签名（服务器提供）
+     *  bizAttr   文件属性（服务器提供）
+     *  type  运行环境，如果是react native则传"rn"，是浏览器环境可以不传
+     */
+
     var formData;
     if(typeof file === "object" &&  typeof file.uri === "string") {
         formData = new FormData();

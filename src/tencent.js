@@ -5,7 +5,7 @@
 
 const urlM = require('url');
 
-
+// todo 整个函数签名改变,详情见对应的native文件
 function upload(file, url, sign, bizAttr, type) {
     var formData;
     if(typeof file === "object" &&  typeof file.uri === "string") {
