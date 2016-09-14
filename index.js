@@ -39,7 +39,7 @@ function imageView(url, imageStyle, version) {
 function getImageStyles()  {
     return {
         thumbnail: 'thumbnail',
-        house: 'detail'
+        detail: 'detail'
     };
 
 }
