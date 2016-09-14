@@ -1,7 +1,6 @@
 /**
  * Created by lavystord on 16/9/10.
  */
-const foo = '!!!!!!!!!!!!!!!!!!!!!!!';
 function upload(file, params, formInput={}) {
 
     const { url, key, uploadToken, uploadHost } = params;

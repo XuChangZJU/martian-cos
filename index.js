@@ -36,12 +36,16 @@ function imageView(url, imageStyle, version) {
 }
 
 
-const imageStyles = {
-    thumbnail: 'thumbnailAvatar',
-};
+function getImageStyles()  {
+    return {
+        thumbnail: 'thumbnail',
+        house: 'detail'
+    };
+
+}
 
 module.exports = {
     upload,
     imageView,
-    imageStyles,
+    getImageStyles,
 };
