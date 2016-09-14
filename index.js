@@ -27,7 +27,7 @@ function upload(dest, file, params) {
 }
 
 function imageView(url, imageStyle, version) {
-    if (url === null)
+    if (!url)
         return undefined;
     if (!imageStyle)
         return url;
