@@ -38,8 +38,8 @@ function imageView(url, imageStyle, version) {
 
 function getImageStyles()  {
     return {
-        thumbnail: 'thumbnail',
-        detail: 'detail'
+        thumbnail: 'thumbnail', //200*200 px
+        detail: 'detail' // 400 px  least
     };
 
 }
