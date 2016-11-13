@@ -1,6 +1,6 @@
 {
   "name": "martian-cos",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "martian cos library",
   "main": "index.js",
   "scripts": {

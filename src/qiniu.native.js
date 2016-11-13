@@ -9,6 +9,7 @@ function upload(file, params, formInput={}) {
     //     return false;
     // }
 
+// url = domain + key
     let formData = new FormData();
 
     formData.append('key',key);
