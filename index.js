@@ -40,6 +40,7 @@ function imageView(url, imageStyle, version) {
 
 function getImageStyles()  {
     return {
+        tiny: 'tiny', // 100 * 100 px
         thumbnail: 'thumbnail', //200*200 px
         detail: 'detail' // 400 px  least
     };
