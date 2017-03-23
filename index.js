@@ -31,7 +31,7 @@ function imageView(url, imageStyle, version) {
         return undefined;
     if (!imageStyle)
         return url;
-    if (url.indexOf('myqcloud.com'))
+    if (url.indexOf('myqcloud.com') !== -1)
         return url;
     const freshCache = version ? `?v=${version}` : '';
     return `${url}-${imageStyle}${freshCache}`
