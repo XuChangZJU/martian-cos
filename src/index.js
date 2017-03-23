@@ -3,8 +3,8 @@
  */
 "use strict";
 
-const tencent = require("./src/tencent");
-const qiniu = require('./src/qiniu');
+const tencent = require("./tencent");
+const qiniu = require('./qiniu');
 
 
 /**
