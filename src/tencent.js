@@ -3,7 +3,7 @@
  */
 "use strict";
 
-const urlM = require('url');
+const jsUrl = require('js-url');
 
 // todo 整个函数签名改变,详情见对应的native文件
 function upload(file, url, sign, bizAttr, type) {
@@ -64,7 +64,7 @@ function upload(file, url, sign, bizAttr, type) {
 
     var promise = new Promise(function(resolve, reject) {
 
-        var urlInfo = urlM.parse(url);
+        var hostname = jsUrl('hostname', url);
         var headers = {
             "Authorization": sign,
             "Host": "web.file.myqcloud.com"
@@ -74,7 +74,7 @@ function upload(file, url, sign, bizAttr, type) {
             headers: headers,
             body: formData,
             method: 'POST',
-            hostname: urlInfo.hostname
+            hostname: hostname
         };
 
         fetch(url, init)
