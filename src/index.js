@@ -26,6 +26,25 @@ function upload(dest, file, params) {
     }
 }
 
+/**
+ * 执行base64上传
+ * @param dest  COS服务提供商（客户端提供），
+ * @param file  文件，目前仅支持string类型，为文件路径(NodeJs)使用
+ * @param params  服务器返回的各种数据参数
+ */
+function uploadBase64(dest, file, params) {
+    switch(dest) {
+        case "tencent": {
+            return tencent.uploadBase64(file, params);
+        }
+        case "qiniu" : {
+            return qiniu.uploadBase64(file, params);
+        }
+        default:
+            throw new Error("不支持的dest目标");
+    }
+}
+
 function imageView(url, imageStyle, version) {
     if (!url)
         return undefined;
@@ -49,6 +68,7 @@ function getImageStyles()  {
 
 module.exports = {
     upload,
+    uploadBase64,
     imageView,
     getImageStyles,
 };

@@ -31,14 +31,12 @@ function upload(file, params, formInput={}) {
         }
     ).then(
         (json) => {
-            if (!json.key || json.error !== undefined) {
-                return Promise.reject(json)
-            }
-            else {
+            if (json.success === true || json.key) {
                 return Promise.resolve({
-                    url:url
+                    url: url
                 });
             }
+            return Promise.reject(json);
         }
     );
 
